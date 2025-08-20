@@ -332,6 +332,15 @@
             loading.style.display = 'block';
             submitBtn.disabled = true;
             submitBtn.textContent = 'Обрабатываем...';
+            
+            // Сброс формы после успешной отправки
+            setTimeout(() => {
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Обработать файл';
+                selectedFile.classList.remove('show');
+                fileInput.value = '';
+            }, 2000);
         });
 
         // Click on upload area to trigger file input
