@@ -1,12 +1,26 @@
-FROM python:3.9-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
+# Установка системных зависимостей
+RUN apt-get update && apt-get install -y \
+    && rm -rf /var/lib/apt/lists/*
+
+# Установка Python зависимостей
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+# Копирование кода
+COPY russian_phone_bot.py .
 
-EXPOSE 80
+# Создание директории для логов
+RUN mkdir -p /tmp && chmod 777 /tmp
 
-CMD ["python", "app.py"]
+# Создание пользователя для безопасности
+RUN useradd -m -u 1000 botuser && chown -R botuser:botuser /app
+USER botuser
+
+# Переменная окружения для логирования
+ENV PYTHONUNBUFFERED=1
+
+CMD ["python", "russian_phone_bot.py"]
