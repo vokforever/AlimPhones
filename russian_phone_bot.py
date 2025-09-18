@@ -10,13 +10,18 @@ from collections import defaultdict
 
 # Настройка логирования
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', 
-    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.WARNING,
     handlers=[
         logging.FileHandler('/tmp/bot.log'),
         logging.StreamHandler()
     ]
 )
+
+# Отключаем логирование httpx (telegram bot library)
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("telegram").setLevel(logging.WARNING)
+
 logger = logging.getLogger(__name__)
 
 # Токен бота (получи у BotFather)
